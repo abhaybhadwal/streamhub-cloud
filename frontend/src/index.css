@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-yt-black: #050811;
+  --color-yt-red: #006aff; /* Neon Blue Accent from screenshot */
+  --color-yt-hover: #161b2e;
+  --color-yt-gray: #94a3b8;
+  --color-yt-border: #1e293b;
+}
+
+:root {
+  background-color: #050811;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050811;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hero-gradient {
+  background: linear-gradient(to top, #050811 0%, transparent 100%);
+}

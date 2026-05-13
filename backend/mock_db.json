@@ -1,0 +1,57 @@
+{
+  "users": [],
+  "videos": [
+    {
+      "_id": "h1",
+      "title": "Inception: The Dream Is Real",
+      "description": "A thief who steals corporate secrets through the use of dream-sharing technology.",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
+      "videoUrl": "https://vjs.zencdn.net/v/oceans.mp4",
+      "userId": {
+        "username": "WarnerBros",
+        "avatar": ""
+      },
+      "views": 45000000,
+      "createdAt": "2026-05-13T19:47:27.164Z"
+    },
+    {
+      "_id": "h2",
+      "title": "The Matrix Resurrections",
+      "description": "Return to a world of two realities: one, everyday life; the other, what lies behind it.",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800",
+      "videoUrl": "https://vjs.zencdn.net/v/oceans.mp4",
+      "userId": {
+        "username": "SciFiCentral",
+        "avatar": ""
+      },
+      "views": 12000000,
+      "createdAt": "2026-05-13T19:47:27.167Z"
+    },
+    {
+      "_id": "b1",
+      "title": "Brahmastra: Part One - Shiva",
+      "description": "A young man on the brink of love and self-discovery.",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800",
+      "videoUrl": "https://vjs.zencdn.net/v/oceans.mp4",
+      "userId": {
+        "username": "StarStudios",
+        "avatar": ""
+      },
+      "views": 35000000,
+      "createdAt": "2026-05-13T19:47:27.168Z"
+    },
+    {
+      "_id": "b2",
+      "title": "Pathaan: The Final Mission",
+      "description": "An Indian spy takes on a private terror group.",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1514533212735-5df27d970db0?w=800",
+      "videoUrl": "https://vjs.zencdn.net/v/oceans.mp4",
+      "userId": {
+        "username": "YashRajFilms",
+        "avatar": ""
+      },
+      "views": 25000000,
+      "createdAt": "2026-05-13T19:47:27.169Z"
+    }
+  ]
+}
