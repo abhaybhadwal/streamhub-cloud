@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, HelpCircle, AlertCircle, CreditCard, Calendar, Lock, User, CheckCircle2 } from 'lucide-react';
+import { Check, X, HelpCircle, AlertCircle, CreditCard, Calendar, Lock, User, CheckCircle2, Smartphone, Building, QrCode } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,15 +9,18 @@ const Pricing = () => {
   const [loading, setLoading] = useState(false);
   const [showMockGateway, setShowMockGateway] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [activeTab, setActiveTab] = useState('card'); // 'card', 'upi', 'netbanking'
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { user, updateUser } = useAuth();
 
-  // Mock Form States
+  // Form States
   const [cardNum, setCardNum] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvc, setCvc] = useState('');
   const [name, setName] = useState('');
+  const [upiId, setUpiId] = useState('');
+  const [selectedBank, setSelectedBank] = useState('');
 
   // Formats card: "424242..." -> "4242 4242 4242..." (16 digits max)
   const formatCardNumber = (value) => {
@@ -35,7 +38,7 @@ const Pricing = () => {
     return digits;
   };
 
-  // Formats CVC: restrict to 4 digits only
+  // Formats CVC
   const formatCvc = (value) => {
     return value.replace(/\D/g, '').substring(0, 4);
   };
@@ -62,8 +65,18 @@ const Pricing = () => {
 
   const handleMockSubmit = async (e) => {
     e.preventDefault();
-    if (!cardNum || !expiry || !cvc || !name) {
-      setError('Please fill out all payment details.');
+    
+    // Validate current tab inputs
+    if (activeTab === 'card' && (!cardNum || !expiry || !cvc || !name)) {
+      setError('Please fill out all card details.');
+      return;
+    }
+    if (activeTab === 'upi' && !upiId) {
+      setError('Please enter a valid UPI ID.');
+      return;
+    }
+    if (activeTab === 'netbanking' && !selectedBank) {
+      setError('Please select a bank to continue.');
       return;
     }
 
@@ -71,7 +84,6 @@ const Pricing = () => {
     setError(null);
 
     try {
-      // Call simulated backend to update isPremium status in DB
       const response = await fetch('http://localhost:5000/api/payment/mock-success', {
         method: 'POST',
         headers: {
@@ -83,20 +95,17 @@ const Pricing = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Update real user context state immediately!
         updateUser({ isPremium: true });
-        
-        // Simulate beautiful payment processing animation
         setTimeout(() => {
           setLoading(false);
           setPaymentSuccess(true);
         }, 2000);
       } else {
-        setError(data.message || 'Failed to process mock subscription.');
+        setError(data.message || 'Failed to process subscription.');
         setLoading(false);
       }
     } catch (err) {
-      setError('Network error connecting to local backend server.');
+      setError('Network error. Could not contact simulated bank.');
       setLoading(false);
     }
   };
@@ -120,8 +129,8 @@ const Pricing = () => {
     {
       name: "Pro",
       desc: "For production applications needing high availability.",
-      monthlyPrice: 99,
-      annualPrice: 79,
+      monthlyPrice: 7999,
+      annualPrice: 6499,
       badge: "MOST POPULAR",
       btnText: user?.isPremium ? "Current Plan" : "Start 14-day trial",
       btnClass: user?.isPremium 
@@ -154,7 +163,7 @@ const Pricing = () => {
 
   const faqs = [
     { q: "Can I change my plan later?", a: "Yes, you can upgrade or downgrade your plan at any time from your billing dashboard. Prorated charges will be applied automatically." },
-    { q: "What happens if I exceed my minutes?", a: "On the Developer plan, streaming will be paused. On the Pro plan, you will be billed $0.002 per additional minute." },
+    { q: "What happens if I exceed my minutes?", a: "On the Developer plan, streaming will be paused. On the Pro plan, you will be billed ₹0.15 per additional minute." },
     { q: "Do you offer a discount for open-source projects?", a: "Yes! We love the open-source community. Contact us with your repository link to get a free Pro license." },
     { q: "Is there a long-term contract?", a: "No, all standard plans are month-to-month or year-to-year. You can cancel your subscription at any time." },
   ];
@@ -216,9 +225,9 @@ const Pricing = () => {
                 <div className="text-5xl font-black text-slate-900">{plan.priceLabel}</div>
               ) : (
                 <div className="flex items-end gap-1">
-                  <span className="text-3xl font-bold text-slate-400 -mb-1">$</span>
-                  <span className="text-6xl font-black text-slate-900 tracking-tighter">
-                    {isAnnual ? plan.annualPrice : plan.monthlyPrice}
+                  <span className="text-3xl font-bold text-slate-400 -mb-1">₹</span>
+                  <span className="text-5xl font-black text-slate-900 tracking-tighter">
+                    {(isAnnual ? plan.annualPrice : plan.monthlyPrice).toLocaleString('en-IN')}
                   </span>
                   <span className="text-slate-500 font-medium mb-1">/mo</span>
                 </div>
@@ -289,13 +298,15 @@ const Pricing = () => {
               initial={{ scale: 0.9, y: 20 }} 
               animate={{ scale: 1, y: 0 }} 
               exit={{ scale: 0.9, y: 20 }} 
-              className="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
+              className="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden p-8 flex flex-col min-h-[500px]"
             >
               {!paymentSuccess ? (
                 <>
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <h3 className="text-2xl font-black text-slate-900">Secure Payment</h3>
+                      <h3 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                         Secure Payment
+                      </h3>
                       <p className="text-slate-500 text-sm">Activate StreamHub Pro Plan</p>
                     </div>
                     <button 
@@ -306,102 +317,186 @@ const Pricing = () => {
                     </button>
                   </div>
 
-                  <div className="bg-blue-50 rounded-2xl p-4 mb-6 flex items-center justify-between border border-blue-100">
+                  <div className="bg-blue-50 rounded-2xl p-4 mb-6 flex items-center justify-between border border-blue-100 flex-shrink-0">
                      <span className="text-slate-700 text-sm font-medium">Pro Edition ({isAnnual ? 'Annual' : 'Monthly'})</span>
-                     <span className="text-slate-900 font-black text-lg">${isAnnual ? 79 : 99}/mo</span>
+                     <span className="text-slate-900 font-black text-xl">₹{(isAnnual ? 6499 : 7999).toLocaleString('en-IN')}</span>
+                  </div>
+
+                  {/* Payment Option Tabs */}
+                  <div className="flex border-b border-slate-100 mb-6 flex-shrink-0">
+                    <button 
+                      onClick={() => { setActiveTab('card'); setError(null); }}
+                      className={`flex-1 pb-3 text-sm font-bold flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'card' ? 'border-[#2b6bff] text-[#2b6bff]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                    >
+                      <CreditCard size={16} /> Card
+                    </button>
+                    <button 
+                      onClick={() => { setActiveTab('upi'); setError(null); }}
+                      className={`flex-1 pb-3 text-sm font-bold flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'upi' ? 'border-[#2b6bff] text-[#2b6bff]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                    >
+                      <Smartphone size={16} /> UPI
+                    </button>
+                    <button 
+                      onClick={() => { setActiveTab('netbanking'); setError(null); }}
+                      className={`flex-1 pb-3 text-sm font-bold flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'netbanking' ? 'border-[#2b6bff] text-[#2b6bff]' : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+                    >
+                      <Building size={16} /> Net Banking
+                    </button>
                   </div>
 
                   {error && (
-                    <div className="bg-rose-50 text-rose-600 p-3 rounded-xl border border-rose-100 text-sm flex items-center gap-2 mb-6">
+                    <div className="bg-rose-50 text-rose-600 p-3 rounded-xl border border-rose-100 text-sm flex items-center gap-2 mb-6 flex-shrink-0">
                        <AlertCircle size={16} /> {error}
                     </div>
                   )}
 
-                  <form onSubmit={handleMockSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Cardholder Name</label>
-                      <div className="relative">
-                         <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                         <input 
-                           type="text" 
-                           placeholder="Jane Doe" 
-                           value={name}
-                           onChange={(e) => setName(e.target.value)}
-                           className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
-                         />
-                      </div>
-                    </div>
+                  <form onSubmit={handleMockSubmit} className="flex-1 flex flex-col">
+                    
+                    <div className="flex-1">
+                    {/* Tab 1: Credit Card */}
+                    {activeTab === 'card' && (
+                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Cardholder Name</label>
+                          <div className="relative">
+                             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                             <input 
+                               type="text" 
+                               placeholder="Jane Doe" 
+                               value={name}
+                               onChange={(e) => setName(e.target.value)}
+                               className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
+                             />
+                          </div>
+                        </div>
 
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Card Number</label>
-                      <div className="relative">
-                         <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                         <input 
-                           type="text" 
-                           placeholder="4242 4242 4242 4242" 
-                           value={cardNum}
-                           onChange={(e) => setCardNum(formatCardNumber(e.target.value))}
-                           maxLength={19}
-                           className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all font-mono"
-                         />
-                      </div>
-                    </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Card Number</label>
+                          <div className="relative">
+                             <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                             <input 
+                               type="text" 
+                               placeholder="4242 4242 4242 4242" 
+                               value={cardNum}
+                               onChange={(e) => setCardNum(formatCardNumber(e.target.value))}
+                               maxLength={19}
+                               className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all font-mono"
+                             />
+                          </div>
+                        </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                       <div>
-                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Expiration</label>
-                         <div className="relative">
-                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                            <input 
-                              type="text" 
-                              placeholder="MM / YY" 
-                              value={expiry}
-                              onChange={(e) => setExpiry(formatExpiry(e.target.value))}
-                              maxLength={5}
-                              className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
-                            />
+                        <div className="grid grid-cols-2 gap-4">
+                           <div>
+                             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Expiration</label>
+                             <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <input 
+                                  type="text" 
+                                  placeholder="MM / YY" 
+                                  value={expiry}
+                                  onChange={(e) => setExpiry(formatExpiry(e.target.value))}
+                                  maxLength={5}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
+                                />
+                             </div>
+                           </div>
+                           <div>
+                             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">CVC</label>
+                             <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                <input 
+                                  type="password" 
+                                  placeholder="•••" 
+                                  value={cvc}
+                                  onChange={(e) => setCvc(formatCvc(e.target.value))}
+                                  maxLength={4}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
+                                />
+                             </div>
+                           </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Tab 2: UPI */}
+                    {activeTab === 'upi' && (
+                      <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="space-y-5 flex flex-col items-center text-center">
+                        <div className="p-4 bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-sm w-36 h-36 mb-2">
+                          <QrCode size={120} className="text-slate-900" />
+                        </div>
+                        <p className="text-xs font-medium text-slate-400">Scan this QR code using any UPI app (GPay, PhonePe, Paytm)</p>
+                        
+                        <div className="flex items-center gap-2 w-full my-1">
+                           <div className="h-px bg-slate-100 flex-1"></div>
+                           <span className="text-[10px] text-slate-300 font-black uppercase tracking-widest">Or enter ID</span>
+                           <div className="h-px bg-slate-100 flex-1"></div>
+                        </div>
+
+                        <div className="w-full">
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 text-left">UPI VPA ID</label>
+                          <div className="relative">
+                             <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                             <input 
+                               type="text" 
+                               placeholder="username@upi" 
+                               value={upiId}
+                               onChange={(e) => setUpiId(e.target.value)}
+                               className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
+                             />
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Tab 3: Net Banking */}
+                    {activeTab === 'netbanking' && (
+                      <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Your Bank</label>
+                         <div className="grid grid-cols-2 gap-3">
+                           {['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak Bank', 'Yes Bank'].map((bank) => (
+                              <button
+                                type="button"
+                                key={bank}
+                                onClick={() => setSelectedBank(bank)}
+                                className={`p-4 rounded-xl border text-xs font-bold text-center transition-all ${selectedBank === bank ? 'border-[#2b6bff] bg-blue-50 text-[#2b6bff]' : 'border-slate-200 hover:bg-slate-50 text-slate-700'}`}
+                              >
+                                {bank}
+                              </button>
+                           ))}
                          </div>
-                       </div>
-                       <div>
-                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">CVC</label>
-                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                            <input 
-                              type="password" 
-                              placeholder="•••" 
-                              value={cvc}
-                              onChange={(e) => setCvc(formatCvc(e.target.value))}
-                              maxLength={4}
-                              className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
-                            />
+                         <div className="pt-2 text-center text-slate-400 text-xs font-medium">
+                           {selectedBank ? `Redirecting to ${selectedBank} portal...` : 'Choose a bank from the list above.'}
                          </div>
-                       </div>
+                      </motion.div>
+                    )}
                     </div>
 
-                    <button 
-                      type="submit" 
-                      disabled={loading}
-                      className="w-full bg-[#2b6bff] text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-600 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 transition-all mt-4 flex items-center justify-center gap-3"
-                    >
-                      {loading ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        `Pay $${isAnnual ? 79 : 99}.00 Now`
-                      )}
-                    </button>
-                    <p className="text-center text-[11px] text-slate-400 mt-2">
-                      🔒 256-bit bank level encryption active
-                    </p>
+                    <div className="flex-shrink-0 mt-6">
+                      <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full bg-[#2b6bff] text-white py-4 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-600 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-3"
+                      >
+                        {loading ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          `Pay ₹${(isAnnual ? 6499 : 7999).toLocaleString('en-IN')}.00`
+                        )}
+                      </button>
+                      <p className="text-center text-[11px] text-slate-400 mt-2">
+                        🔒 Secured via Bank Grade encryption active
+                      </p>
+                    </div>
                   </form>
                 </>
               ) : (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }} 
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-6 flex flex-col items-center"
+                  className="text-center py-6 flex flex-col items-center justify-center flex-1"
                 >
                   <motion.div 
                     initial={{ scale: 0 }}
@@ -413,7 +508,7 @@ const Pricing = () => {
                   </motion.div>
                   <h3 className="text-3xl font-black text-slate-900 mb-2">Success!</h3>
                   <p className="text-slate-500 text-sm mb-8 max-w-xs leading-relaxed">
-                     Thank you! Your subscription is now active. You have been successfully upgraded to the **StreamHub Pro** plan.
+                     Thank you! Your payment of **₹{(isAnnual ? 6499 : 7999).toLocaleString('en-IN')}** was simulated successfully. Your subscription is now **active**!
                   </p>
                   <button 
                     onClick={() => { setShowMockGateway(false); setPaymentSuccess(false); navigate('/'); }}
