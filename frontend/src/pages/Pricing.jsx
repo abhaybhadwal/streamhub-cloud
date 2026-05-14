@@ -19,6 +19,27 @@ const Pricing = () => {
   const [cvc, setCvc] = useState('');
   const [name, setName] = useState('');
 
+  // Formats card: "424242..." -> "4242 4242 4242..." (16 digits max)
+  const formatCardNumber = (value) => {
+    const digits = value.replace(/\D/g, '').substring(0, 16);
+    const groups = digits.match(/.{1,4}/g);
+    return groups ? groups.join(' ') : '';
+  };
+
+  // Formats expiry: "1224" -> "12/24" (4 digits max)
+  const formatExpiry = (value) => {
+    const digits = value.replace(/\D/g, '').substring(0, 4);
+    if (digits.length > 2) {
+      return `${digits.substring(0, 2)}/${digits.substring(2, 4)}`;
+    }
+    return digits;
+  };
+
+  // Formats CVC: restrict to 4 digits only
+  const formatCvc = (value) => {
+    return value.replace(/\D/g, '').substring(0, 4);
+  };
+
   const handleAction = async (planName) => {
     if (planName === 'Developer') {
       navigate('/auth');
@@ -319,7 +340,7 @@ const Pricing = () => {
                            type="text" 
                            placeholder="4242 4242 4242 4242" 
                            value={cardNum}
-                           onChange={(e) => setCardNum(e.target.value)}
+                           onChange={(e) => setCardNum(formatCardNumber(e.target.value))}
                            maxLength={19}
                            className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all font-mono"
                          />
@@ -335,7 +356,7 @@ const Pricing = () => {
                               type="text" 
                               placeholder="MM / YY" 
                               value={expiry}
-                              onChange={(e) => setExpiry(e.target.value)}
+                              onChange={(e) => setExpiry(formatExpiry(e.target.value))}
                               maxLength={5}
                               className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
                             />
@@ -349,7 +370,7 @@ const Pricing = () => {
                               type="password" 
                               placeholder="•••" 
                               value={cvc}
-                              onChange={(e) => setCvc(e.target.value)}
+                              onChange={(e) => setCvc(formatCvc(e.target.value))}
                               maxLength={4}
                               className="w-full bg-slate-50 border border-slate-200 focus:border-[#2b6bff] rounded-xl py-3.5 pl-11 pr-4 outline-none text-sm font-medium text-slate-800 transition-all"
                             />
