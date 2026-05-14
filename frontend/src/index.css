@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-yt-black: #050811;
-  --color-yt-red: #006aff; /* Neon Blue Accent from screenshot */
-  --color-yt-hover: #161b2e;
-  --color-yt-gray: #94a3b8;
-  --color-yt-border: #1e293b;
+  --color-yt-black: #ffffff; /* Re-mapped for compatibility, but it's white now */
+  --color-yt-red: #2B6BFF; /* New primary blue */
+  --color-yt-hover: #f1f5f9; /* Light hover gray */
+  --color-yt-gray: #64748b; /* Medium gray */
+  --color-yt-border: #e2e8f0; /* Light border */
 }
 
 :root {
-  background-color: #050811;
-  color: white;
+  background-color: #ffffff;
+  color: #0f172a;
   font-family: 'Inter', sans-serif;
 }
 
@@ -19,30 +19,30 @@ body {
   padding: 0;
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom scrollbar for light mode */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050811;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .hero-gradient {
-  background: linear-gradient(to top, #050811 0%, transparent 100%);
+  background: linear-gradient(to bottom, #f0f7ff 0%, #ffffff 100%);
 }

@@ -116,7 +116,22 @@ router.put('/profile', auth, upload.single('avatar'), async (req, res) => {
 
     await user.save();
     
-    res.json({ id: user.id, username: user.username, email: user.email, avatar: user.avatar });
+    res.json({ id: user.id, username: user.username, email: user.email, avatar: user.avatar, isPremium: user.isPremium });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Upgrade to Premium
+router.post('/upgrade', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    
+    user.isPremium = true;
+    await user.save();
+    
+    res.json({ id: user.id, username: user.username, email: user.email, avatar: user.avatar, isPremium: user.isPremium });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

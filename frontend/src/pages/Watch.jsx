@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ThumbsUp, Share2, Plus, Flag, ChevronDown, Check } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useAuth } from '../context/AuthContext';
+import { Lock, Star } from 'lucide-react';
 
 const Watch = () => {
   const { id } = useParams();
@@ -139,9 +140,24 @@ const Watch = () => {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="aspect-video rounded-[2.5rem] overflow-hidden bg-black shadow-2xl border border-white/5"
+          className="aspect-video rounded-[2.5rem] overflow-hidden bg-[#0a0a0f] shadow-2xl border border-white/5 relative"
         >
-          {ytId ? (
+          {(!user || !user.isPremium) ? (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-black/80 to-black p-8 text-center z-10 backdrop-blur-sm">
+              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10 shadow-2xl">
+                <Lock size={32} className="text-yt-gray" />
+              </div>
+              <h2 className="text-3xl font-black mb-3">Premium Content Locked</h2>
+              <p className="text-yt-gray max-w-md mb-8">This cinematic masterpiece is reserved for StreamHub Premium members. Upgrade now to unlock instant access.</p>
+              <Link 
+                to="/premium"
+                className="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold px-10 py-4 rounded-full shadow-lg shadow-orange-500/20 hover:scale-105 transition-transform flex items-center gap-2"
+              >
+                <Star fill="currentColor" size={20} />
+                Subscribe to Watch
+              </Link>
+            </div>
+          ) : ytId ? (
             <iframe
               width="100%"
               height="100%"

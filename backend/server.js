@@ -17,6 +17,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/user'));
 app.use('/api/videos', require('./routes/video'));
+app.use('/api/payment', require('./routes/payment'));
 
 const PORT = process.env.PORT || 5000;
 

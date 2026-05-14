@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
     
-    res.status(201).json({ token, user: { id: user.id, username, email } });
+    res.status(201).json({ token, user: { id: user.id, username, email, isPremium: user.isPremium } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
     
-    res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
+    res.json({ token, user: { id: user.id, username: user.username, email: user.email, isPremium: user.isPremium } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   avatar: { type: String, default: '' },
+  isPremium: { type: Boolean, default: false },
   subscribers: { type: Number, default: 0 },
   subscribedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
