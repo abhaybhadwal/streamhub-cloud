@@ -99,19 +99,19 @@ const Upload = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white/[0.03] backdrop-blur-3xl rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl"
+        className="bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-2xl"
       >
-        <div className="flex items-center justify-between p-10 border-b border-white/5 bg-gradient-to-r from-blue-600/10 to-transparent">
+        <div className="flex items-center justify-between p-10 border-b border-slate-200 bg-gradient-to-r from-blue-600/5 to-transparent">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/20">
               <Film className="text-white" size={24} />
             </div>
             <div>
-              <h2 className="text-2xl font-black tracking-tight">Publish Masterpiece</h2>
-              <p className="text-yt-gray text-[10px] uppercase tracking-[0.2em] font-bold">Studio Mode Active</p>
+              <h2 className="text-2xl font-black tracking-tight text-slate-900">Publish Masterpiece</h2>
+              <p className="text-slate-500 text-[10px] uppercase tracking-[0.2em] font-bold">Studio Mode Active</p>
             </div>
           </div>
-          <button onClick={() => navigate('/')} className="p-3 hover:bg-white/10 rounded-full transition-colors">
+          <button onClick={() => navigate('/')} className="p-3 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600">
             <X size={24} />
           </button>
         </div>
@@ -121,14 +121,14 @@ const Upload = () => {
             <button
               type="button"
               onClick={() => { setUploadMode('file'); setFile(null); setYoutubeUrl(''); }}
-              className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all ${uploadMode === 'file' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white/5 text-yt-gray hover:bg-white/10'}`}
+              className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all ${uploadMode === 'file' ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
             >
               Upload File
             </button>
             <button
               type="button"
               onClick={() => { setUploadMode('link'); setFile(null); setYoutubeUrl(''); }}
-              className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all ${uploadMode === 'link' ? 'bg-rose-600 text-white shadow-lg' : 'bg-white/5 text-yt-gray hover:bg-white/10'}`}
+              className={`px-8 py-3 rounded-2xl font-bold text-sm transition-all ${uploadMode === 'link' ? 'bg-rose-600 text-white shadow-lg' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
             >
               YouTube Link
             </button>
@@ -142,7 +142,7 @@ const Upload = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="group border-2 border-dashed border-white/10 rounded-[2.5rem] p-20 flex flex-col items-center gap-6 hover:bg-white/[0.05] hover:border-blue-500/50 transition-all cursor-pointer relative overflow-hidden"
+                  className="group border-2 border-dashed border-slate-200 rounded-[2.5rem] p-20 flex flex-col items-center gap-6 hover:bg-slate-50 hover:border-blue-500/50 transition-all cursor-pointer relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <input
@@ -156,13 +156,13 @@ const Upload = () => {
                   />
                   <motion.div 
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center border border-white/10 shadow-xl"
+                    className="w-24 h-24 bg-slate-100 rounded-3xl flex items-center justify-center border border-slate-200 shadow-xl"
                   >
                     <UploadIcon size={40} className="text-blue-500" />
                   </motion.div>
                   <div className="text-center space-y-2 relative z-20">
-                    <p className="text-xl font-bold tracking-tight">Drag & drop your cinematic file</p>
-                    <p className="text-yt-gray text-xs uppercase tracking-widest font-bold">Up to 100MB • 4K Supported</p>
+                    <p className="text-xl font-bold tracking-tight text-slate-900">Drag & drop your cinematic file</p>
+                    <p className="text-slate-400 text-xs uppercase tracking-widest font-bold">Up to 100MB • 4K Supported</p>
                   </div>
                 </motion.div>
               ) : (
@@ -186,19 +186,19 @@ const Upload = () => {
                   </div>
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-yt-gray ml-2">Movie Title</label>
-                      <input type="text" required placeholder="e.g. Crystalline Horizon" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-blue-500/50 transition-all font-bold tracking-tight" value={title} onChange={(e) => setTitle(e.target.value)} />
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-2">Movie Title</label>
+                      <input type="text" required placeholder="e.g. Crystalline Horizon" className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl px-6 py-4 outline-none focus:border-[#2b6bff] focus:ring-2 focus:ring-blue-100 transition-all font-bold tracking-tight" value={title} onChange={(e) => setTitle(e.target.value)} />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-yt-gray ml-2">Story Description</label>
-                      <textarea rows={4} placeholder="Tell the world about your masterpiece..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-blue-500/50 transition-all resize-none leading-relaxed" value={desc} onChange={(e) => setDesc(e.target.value)} />
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-2">Story Description</label>
+                      <textarea rows={4} placeholder="Tell the world about your masterpiece..." className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl px-6 py-4 outline-none focus:border-[#2b6bff] focus:ring-2 focus:ring-blue-100 transition-all resize-none leading-relaxed" value={desc} onChange={(e) => setDesc(e.target.value)} />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-yt-gray ml-2">Thumbnail Link</label>
-                      <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-blue-500/50 transition-all font-medium" placeholder="https://images.unsplash.com/..." value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-2">Thumbnail Link</label>
+                      <input type="text" className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl px-6 py-4 outline-none focus:border-[#2b6bff] focus:ring-2 focus:ring-blue-100 transition-all font-medium" placeholder="https://images.unsplash.com/..." value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
                     </div>
                     <div className="pt-6">
-                      <button type="submit" disabled={uploading || success} className={`w-full relative group overflow-hidden bg-white text-black font-black py-5 rounded-2xl transition-all shadow-2xl shadow-white/5 ${uploading ? 'opacity-50' : 'hover:-translate-y-1 hover:shadow-white/10'}`}>
+                      <button type="submit" disabled={uploading || success} className={`w-full relative group overflow-hidden bg-slate-900 text-white font-black py-5 rounded-2xl transition-all shadow-xl ${uploading ? 'opacity-50' : 'hover:-translate-y-1 hover:bg-slate-800'}`}>
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                         <span className="relative z-10 flex items-center justify-center gap-3 group-hover:text-white transition-colors">
                           {success ? 'PUBLISHED SUCCESSFULLY' : uploading ? 'UPLOADING...' : 'PUBLISH MASTERPIECE'}
@@ -228,19 +228,19 @@ const Upload = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-yt-gray ml-2">Movie Title</label>
-                    <input type="text" required placeholder="e.g. Crystalline Horizon" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-blue-500/50 transition-all font-bold tracking-tight" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-2">Movie Title</label>
+                    <input type="text" required placeholder="e.g. Crystalline Horizon" className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl px-6 py-4 outline-none focus:border-[#2b6bff] focus:ring-2 focus:ring-blue-100 transition-all font-bold tracking-tight" value={title} onChange={(e) => setTitle(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-yt-gray ml-2">Story Description</label>
-                    <textarea rows={4} placeholder="Tell the world about your masterpiece..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-blue-500/50 transition-all resize-none leading-relaxed" value={desc} onChange={(e) => setDesc(e.target.value)} />
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-2">Story Description</label>
+                    <textarea rows={4} placeholder="Tell the world about your masterpiece..." className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl px-6 py-4 outline-none focus:border-[#2b6bff] focus:ring-2 focus:ring-blue-100 transition-all resize-none leading-relaxed" value={desc} onChange={(e) => setDesc(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-yt-gray ml-2">Thumbnail Link</label>
-                    <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-blue-500/50 transition-all font-medium" placeholder="https://images.unsplash.com/..." value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-2">Thumbnail Link</label>
+                    <input type="text" className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl px-6 py-4 outline-none focus:border-[#2b6bff] focus:ring-2 focus:ring-blue-100 transition-all font-medium" placeholder="https://images.unsplash.com/..." value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
                   </div>
                   <div className="pt-6">
-                    <button type="submit" disabled={uploading || success} className={`w-full relative group overflow-hidden bg-white text-black font-black py-5 rounded-2xl transition-all shadow-2xl shadow-white/5 ${uploading ? 'opacity-50' : 'hover:-translate-y-1 hover:shadow-white/10'}`}>
+                    <button type="submit" disabled={uploading || success} className={`w-full relative group overflow-hidden bg-slate-900 text-white font-black py-5 rounded-2xl transition-all shadow-xl ${uploading ? 'opacity-50' : 'hover:-translate-y-1 hover:bg-slate-800'}`}>
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <span className="relative z-10 flex items-center justify-center gap-3 group-hover:text-white transition-colors">
                         {success ? 'PUBLISHED SUCCESSFULLY' : uploading ? 'PUBLISHING...' : 'PUBLISH LINK'}

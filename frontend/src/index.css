@@ -81,6 +81,16 @@ body {
   background: var(--color-text-muted);
 }
 
+/* Premium global styling for writing boxes (Inputs/Textareas) */
+input, textarea {
+  line-height: 1.5;
+}
+textarea {
+  min-height: 80px;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
 .glass {
   background: var(--color-glass-bg);
   backdrop-filter: blur(20px);
