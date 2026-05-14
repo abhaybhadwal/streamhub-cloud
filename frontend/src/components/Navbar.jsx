@@ -1,13 +1,15 @@
-import { Search, Globe, ChevronDown, PlaySquare as Youtube, LogOut, Settings, Film, Clock, Star } from 'lucide-react';
+import { Search, Globe, ChevronDown, PlaySquare as Youtube, LogOut, Settings, Film, Clock, Star, Sun, Moon } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const profileRef = useRef(null);
@@ -138,6 +140,19 @@ const Navbar = () => {
             )}
           </AnimatePresence>
         </div>
+
+        <motion.button 
+          whileTap={{ scale: 0.9 }}
+          onClick={toggleTheme} 
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-slate-50 hover:bg-slate-100 transition-colors border border-slate-200"
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+        >
+          {theme === 'light' ? (
+            <Moon size={18} className="text-slate-600" />
+          ) : (
+            <Sun size={18} className="text-yellow-500 fill-yellow-500" />
+          )}
+        </motion.button>
 
         <button onClick={() => navigate('/search')} className="text-slate-500 hover:text-[#2b6bff] transition-colors">
           <Search size={20} />

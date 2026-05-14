@@ -1,48 +1,92 @@
 @import "tailwindcss";
 
-@theme {
-  --color-yt-black: #ffffff; /* Re-mapped for compatibility, but it's white now */
-  --color-yt-red: #2B6BFF; /* New primary blue */
-  --color-yt-hover: #f1f5f9; /* Light hover gray */
-  --color-yt-gray: #64748b; /* Medium gray */
-  --color-yt-border: #e2e8f0; /* Light border */
+:root {
+  --color-bg-base: #ffffff;
+  --color-bg-soft: #f8fafc;
+  --color-text-base: #0f172a;
+  --color-text-mid: #334155;
+  --color-text-muted: #64748b;
+  --color-text-subtle: #94a3b8;
+  --color-border-base: #e2e8f0;
+  --color-glass-bg: rgba(255, 255, 255, 0.8);
+  --color-glass-border: rgba(0, 0, 0, 0.05);
+  --hero-gradient-start: #f0f7ff;
+  --hero-gradient-end: #ffffff;
+  
+  background-color: var(--color-bg-base);
+  color: var(--color-text-base);
+  font-family: 'Inter', sans-serif;
 }
 
-:root {
-  background-color: #ffffff;
-  color: #0f172a;
-  font-family: 'Inter', sans-serif;
+.dark {
+  --color-bg-base: #0f172a;
+  --color-bg-soft: #1e293b;
+  --color-text-base: #f8fafc;
+  --color-text-mid: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
+  --color-border-base: #334155;
+  --color-glass-bg: rgba(15, 23, 42, 0.8);
+  --color-glass-border: rgba(255, 255, 255, 0.05);
+  --hero-gradient-start: #1e1b4b;
+  --hero-gradient-end: #0f172a;
+  
+  background-color: var(--color-bg-base);
+  color: var(--color-text-base);
+}
+
+@theme {
+  --color-yt-red: #2B6BFF;
+  --color-yt-black: var(--color-bg-base);
+  --color-yt-hover: var(--color-bg-soft);
+  --color-yt-gray: var(--color-text-muted);
+  --color-yt-border: var(--color-border-base);
+
+  /* Dynamic theme overrides injected into utility classes! */
+  --color-white: var(--color-bg-base);
+  --color-slate-50: var(--color-bg-soft);
+  --color-slate-100: var(--color-bg-soft);
+  --color-slate-200: var(--color-border-base);
+  --color-slate-300: var(--color-text-subtle);
+  --color-slate-400: var(--color-text-subtle);
+  --color-slate-500: var(--color-text-muted);
+  --color-slate-700: var(--color-text-mid);
+  --color-slate-800: var(--color-text-mid);
+  --color-slate-900: var(--color-text-base);
 }
 
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-base);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Custom scrollbar for light mode */
+/* Custom scrollbars dynamic */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--color-bg-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--color-text-subtle);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--color-text-muted);
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--color-glass-bg);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-glass-border);
 }
 
 .hero-gradient {
-  background: linear-gradient(to bottom, #f0f7ff 0%, #ffffff 100%);
+  background: linear-gradient(to bottom, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
 }

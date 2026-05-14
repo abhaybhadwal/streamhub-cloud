@@ -29,7 +29,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-white text-[#0f172a] selection:bg-blue-100 selection:text-blue-900 font-sans">
+        <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 font-sans">
           <Navbar />
           <main className="min-h-screen">
             <Routes>
