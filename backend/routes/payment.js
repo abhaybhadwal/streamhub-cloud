@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { protect } = require('../middleware/auth');
+const protect = require('../middleware/auth');
 
 // @route   POST /api/payment/create-checkout-session
 // @desc    Create Stripe checkout session for Pro plan
